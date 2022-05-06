@@ -16,8 +16,8 @@ RUN bundle config set --local without 'development test' \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-# Install client to ineteract with postgresql
-RUN apt-get install postgresql postgresql-client
+# Install client to interact with postgresql
+# RUN apt-get install postgresql postgresql-client
 
 COPY . .
 
