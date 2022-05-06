@@ -14,6 +14,8 @@ jobs:
     env:
       IMAGE_NAME: id-me-hello-world-app
       PROJECT_ID:	id-me-349223
+      SERVICE_ACCOUNT: github-actions-service-account@id-me-349223.iam.gserviceaccount.com
+      WORKLOAD_IDENTITY_PROVIDER:	projects/61668707706/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider
 
     steps:
     - name: 'Checking out the Master branch'
@@ -24,8 +26,8 @@ jobs:
       id: 'auth'
       uses: google-github-actions/auth@v0
       with:
-        workload_identity_provider: 'projects/61668707706/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider'
-        service_account: 'github-actions-service-account@id-me-349223.iam.gserviceaccount.com'
+        service_account: $SERVICE_ACCOUNT
+        workload_identity_provider: $WORKLOAD_IDENTITY_PROVIDER
 
     - name: 'Setting up the Google Cloud SDK'
       uses: google-github-actions/setup-gcloud@v0
@@ -35,10 +37,10 @@ jobs:
 
     - name: 'Tagging the Docker Image'
       id: increment-git-tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |-
         bash ./scripts/update_git_tag.sh -v patch
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: 'Configuring the Docker client'
       run: |-
