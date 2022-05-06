@@ -1,3 +1,4 @@
+[![Build and Push Docker Image to Artifact Registry](https://github.com/NicholasYamamoto/id-me-hello-world-app/actions/workflows/push_to_artifactory.yml/badge.svg?branch=master)](https://github.com/NicholasYamamoto/id-me-hello-world-app/actions/workflows/push_to_artifactory.yml)
 # ID.me Hello World App
 
 This application was created for the ID.me Take Home Assignment for a DevOps Engineer III position.
