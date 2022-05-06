@@ -35,6 +35,8 @@ jobs:
 
     - name: 'Tagging the Docker Image'
       id: increment-git-tag
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       run: |-
         bash ./scripts/update_git_tag.sh -v patch
 
