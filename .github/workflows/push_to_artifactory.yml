@@ -20,8 +20,8 @@ jobs:
       uses: actions/checkout@v3
 
     # Using Workload Identity Federation instead of a long-life Service Account Key for better security
-    - id: 'auth'
-      name: 'Authenticating to Google Cloud'
+    - name: 'Authenticating to Google Cloud'
+      id: 'auth'
       uses: google-github-actions/auth@v0
       with:
         workload_identity_provider: 'projects/61668707706/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider'
@@ -35,10 +35,10 @@ jobs:
 
     - name: 'Tagging the Docker Image'
       id: increment-git-tag
-      with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
       run: |-
         bash ./scripts/update_git_tag.sh -v patch
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: 'Configuring the Docker client'
       run: |-
