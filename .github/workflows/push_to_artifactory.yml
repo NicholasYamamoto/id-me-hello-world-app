@@ -12,8 +12,10 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
+      GITHUB_USERNAME: NicholasYamamoto
       IMAGE_NAME: id-me-hello-world-app
       PROJECT_ID:	id-me-349223
+      REPOSITORY_NAME: id-me-hello-world-app
       SERVICE_ACCOUNT: github-actions-service-account@id-me-349223.iam.gserviceaccount.com
       WORKLOAD_IDENTITY_PROVIDER:	projects/61668707706/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider
 
@@ -39,6 +41,8 @@ jobs:
       id: increment-git-tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_USERNAME: ${{ env.GITHUB_USERNAME }}
+        REPOSITORY_NAME: ${{ env.REPOSITORY_NAME }}
       run: |-
         bash ./scripts/update_git_tag.sh -v patch
 

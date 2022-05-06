@@ -54,8 +54,8 @@ NEEDS_TAG=`git describe --contains $GIT_COMMIT 2>/dev/null`
 if [ -z "$NEEDS_TAG" ]; then
   echo "Tagged with $NEW_TAG"
   git tag $NEW_TAG
-  git push --tags
-  git push
+  git push https://$GITHUB_ACCESS_TOKEN@github.com/$GITHUB_USERNAME/$REPOSITORY_NAME.git --tags
+  git push https://$GITHUB_ACCESS_TOKEN@github.com/$GITHUB_USERNAME/$REPOSITORY_NAME.git
 else
   echo "Already a tag on this commit"
 fi
