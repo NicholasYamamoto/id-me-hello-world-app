@@ -11,7 +11,7 @@ RUN apk update && \
 
 WORKDIR /opt/app
 
-COPY Gemfile* .
+COPY Gemfile* ./
 
 # Install the Gems to generate Build Artifacts
 RUN bundle config set --local without 'development test' && \
