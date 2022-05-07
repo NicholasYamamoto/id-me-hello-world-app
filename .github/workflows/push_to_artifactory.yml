@@ -44,7 +44,7 @@ jobs:
         GITHUB_USERNAME: ${{ env.GITHUB_USERNAME }}
         REPOSITORY_NAME: ${{ env.REPOSITORY_NAME }}
       run: |-
-        bash ./scripts/update_git_tag.sh -v patch
+        bash ./scripts/create_git_tag.sh -v patch
 
     - name: 'Configuring the Docker client'
       run: |-

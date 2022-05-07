@@ -1,26 +1,30 @@
-FROM ruby:3.0.4
+# Use the tiny Alpine image to greatly reduce overall image size
+FROM ruby:3.0.4-alpine3.14
 
-WORKDIR /usr/src/app
+# Install packages necessary to communicate with CloudSQL PostgreSQL database
+RUN apk update && \
+ apk upgrade && \
+ apk add --no-cache \
+    build-base \
+    postgresql-client \
+    postgresql-dev \
+    tzdata
 
-# Install bundler
-RUN gem update --system
-RUN gem install bundler
+WORKDIR /opt/app
 
 # Install runtime dependencies to host machine
 COPY Gemfile* ./
 
-RUN bundle config set --local without 'development test' \
- && bundle install --jobs 4 --retry 3 \
+RUN bundle config set --local without 'development test' && \
+ # bundle config --local build.sassc --disable-march-tune-native && \
+ bundle install --jobs 4 --retry 3 && \
  # Remove Bundler cache, C source files and compiled object files
- && rm -rf /usr/local/bundle/cache/*.gem \
- && find /usr/local/bundle/gems/ -name "*.c" -delete \
- && find /usr/local/bundle/gems/ -name "*.o" -delete
-
-# Install client to interact with postgresql
-# RUN apt-get install postgresql postgresql-client
+ rm -rf /usr/local/bundle/cache/*.gem && \
+ find /usr/local/bundle/gems/ -name "*.c" -delete && \
+ find /usr/local/bundle/gems/ -name "*.o" -delete
 
 COPY . .
 
 EXPOSE 3000
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "server"]
