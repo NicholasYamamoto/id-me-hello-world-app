@@ -1,22 +1,20 @@
-# Use the tiny Alpine image to greatly reduce overall image size
-FROM ruby:3.0.4-alpine3.14
+# Utilize a multi-stage build to cut down on the final image size
+FROM ruby:3.0.4-alpine3.14 AS builder
 
-# Install packages necessary to communicate with CloudSQL PostgreSQL database
+# Install necessary packages for building
 RUN apk update && \
  apk upgrade && \
  apk add --no-cache \
     build-base \
-    postgresql-client \
     postgresql-dev \
     tzdata
 
 WORKDIR /opt/app
 
-# Install runtime dependencies to host machine
-COPY Gemfile* ./
+COPY Gemfile* .
 
+# Install the Gems to generate Build Artifacts
 RUN bundle config set --local without 'development test' && \
- # bundle config --local build.sassc --disable-march-tune-native && \
  bundle install --jobs 4 --retry 3 && \
  # Remove Bundler cache, C source files and compiled object files
  rm -rf /usr/local/bundle/cache/*.gem && \
@@ -24,6 +22,21 @@ RUN bundle config set --local without 'development test' && \
  find /usr/local/bundle/gems/ -name "*.o" -delete
 
 COPY . .
+
+# Build the Production-ready image
+FROM ruby:3.0.4-alpine3.14
+
+# Install packages necessary to communicate with CloudSQL PostgreSQL database
+RUN apk add --update --no-cache \
+ postgresql-client \
+ postgresql-dev \
+ tzdata
+
+# Copy over the app and any Build Artifacts
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY --from=builder /opt/app /opt/app
+
+WORKDIR /opt/app
 
 EXPOSE 3000
 
