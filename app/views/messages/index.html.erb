@@ -1,0 +1,5 @@
+<h1>Displaying contents of the messages table</h1>
+
+<% @messages.each do |message| %>
+The message for <%=message.id%> is: <%=message.text%><br />
+<% end %>
