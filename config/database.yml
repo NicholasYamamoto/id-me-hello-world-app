@@ -13,6 +13,7 @@ development:
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
+  # TODO: I don't think this matters as I'm still able to reach the CloudSQL instance by using the host
   port: 5432
 
 # Warning: The database defined as "test" will be erased and
@@ -27,11 +28,6 @@ test:
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
-#
-# Instead, provide the password or a full connection URL as an environment
-# variable when you boot the app. For example:
-#
-#   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
 
 production:
   <<: *default

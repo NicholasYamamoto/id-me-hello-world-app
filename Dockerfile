@@ -41,5 +41,5 @@ WORKDIR /opt/app
 EXPOSE 3000
 
 # Run script to run Rails asset pipeline and start the server
-RUN chmod +x entrypoint.sh
-CMD ["/entrypoint.sh"]
+RUN chmod 0755 entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
