@@ -38,6 +38,7 @@ COPY --from=builder /opt/app /opt/app
 
 WORKDIR /opt/app
 
+# Use the default port for the Puma http server
 EXPOSE 3000
 
 # Run script to run Rails asset pipeline and start the server
